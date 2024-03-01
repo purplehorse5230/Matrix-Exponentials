@@ -1,0 +1,253 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8899,        245]
+NotebookOptionsPosition[      8057,        221]
+NotebookOutlinePosition[      8600,        240]
+CellTagsIndexPosition[      8557,        237]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+   RowBox[{
+   "This", " ", "code", " ", "takes", " ", "the", " ", "function", " ", 
+    "value", " ", "at", " ", "the", " ", "Chebyshev", " ", "node", " ", 
+    "points", " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"Gauss", " ", "or", " ", "Gauss"}], "-", "Radau", "-", 
+      "Legendre"}], ")"}]}], ",", " ", 
+   RowBox[{
+   "and", " ", "computes", " ", "the", " ", "integration", " ", "matrix", " ",
+     "by", " ", "Lagrange", " ", 
+    RowBox[{"interpolation", "."}]}]}], " ", "*)"}]], "Input",
+ CellLabel->"In[17]:=",ExpressionUUID->"05d5f323-5935-432a-9913-414d82d98f6b"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"spre", "=", 
+   RowBox[{"OutputForm", "[", "\"\<A(\>\"", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"spretc", "=", 
+   RowBox[{"OutputForm", "[", "\"\<tLegendre(\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"smid", "=", 
+   RowBox[{"OutputForm", "[", "\"\<,\>\"", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"smid2", "=", 
+   RowBox[{"OutputForm", "[", "\"\<)=\>\"", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"send", "=", 
+    RowBox[{"OutputForm", "[", "\"\<;\>\"", "]"}]}], ";"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Now", " ", "build", " ", "the", " ", "tables"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"For", "[", 
+  RowBox[{
+   RowBox[{"n", "=", "3"}], ",", 
+   RowBox[{"n", " ", "<", "5"}], ",", 
+   RowBox[{"n", "++"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"The", " ", "output", " ", "file"}], " ", "*)"}], 
+   "\[IndentingNewLine]", "  ", 
+   RowBox[{
+    RowBox[{"filename", "=", 
+     RowBox[{"StringJoin", "[", 
+      RowBox[{"\"\<tlgr1\>\"", ",", 
+       RowBox[{"ToString", "[", "n", "]"}], ",", "\"\<.m\>\""}], "]"}]}], ";",
+     " ", "\[IndentingNewLine]", 
+    RowBox[{"(*", " ", 
+     RowBox[{"Open", " ", "the", " ", "output", " ", "file"}], " ", "*)"}], 
+    " ", "\[IndentingNewLine]", 
+    RowBox[{"strm", "=", 
+     RowBox[{"OpenWrite", "[", "filename", "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", " ", 
+     RowBox[{"Gauss", "-", 
+      RowBox[{"Radau", " ", "node", " ", "points"}]}], " ", "*)"}], 
+    "\[IndentingNewLine]", " ", 
+    RowBox[{"For", " ", "[", 
+     RowBox[{
+      RowBox[{"m", "=", "1"}], ",", " ", 
+      RowBox[{"m", "<", 
+       RowBox[{"n", "+", "1"}]}], ",", " ", 
+      RowBox[{"m", "++"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"f", "[", "m", "]"}], "=", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "-", 
+           RowBox[{"N", "[", 
+            RowBox[{
+             RowBox[{"Root", "[", 
+              RowBox[{
+               RowBox[{"LegendreP", "[", 
+                RowBox[{"n", ",", "#1"}], "]"}], ",", 
+               RowBox[{"n", "-", "m", "+", "1"}]}], "]"}], ",", 
+             RowBox[{
+              RowBox[{"n", "*", "3"}], "+", "10"}]}], "]"}]}], ")"}], "/", 
+         "2"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Write", "[", 
+        RowBox[{"strm", ",", " ", "spretc", ",", " ", 
+         RowBox[{"m", "+", "1"}], ",", "smid2", ",", 
+         RowBox[{"FortranForm", "[", 
+          RowBox[{
+           RowBox[{"f", "[", "m", "]"}], "//", "N"}], "]"}], ",", "send"}], 
+        "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";", 
+    "\[IndentingNewLine]", "  ", 
+    RowBox[{"(*", " ", 
+     RowBox[{"Now", " ", "compute", " ", "the", " ", "coefficients"}], " ", 
+     "*)"}], "\n", "    ", 
+    RowBox[{"For", "[", 
+     RowBox[{
+      RowBox[{"i", "=", "1"}], ",", 
+      RowBox[{"i", "<", 
+       RowBox[{"n", "+", "1"}]}], ",", 
+      RowBox[{"i", "++"}], ",", " ", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{"Define", " ", "the", " ", "polynomial"}], ",", " ", 
+        RowBox[{
+        "it", " ", "turns", " ", "out", " ", "that", " ", "using", " ", "N", 
+         " ", "with", " ", "60", " ", "digits", " ", "can", " ", "greatly", 
+         " ", "accelerate", " ", "the", " ", "computing"}]}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"fint", "[", "x_", "]"}], "=", 
+        RowBox[{"Expand", "[", 
+         RowBox[{"N", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Product", "[", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"x", "-", 
+                RowBox[{"f", "[", "k", "]"}]}], ")"}], ",", 
+              RowBox[{"{", 
+               RowBox[{"k", ",", "1", ",", "n"}], "}"}]}], "]"}], "/", 
+            RowBox[{"(", 
+             RowBox[{"x", "-", 
+              RowBox[{"f", "[", "i", "]"}]}], ")"}]}], ",", 
+           RowBox[{
+            RowBox[{"n", "*", "3"}], "+", "10"}]}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", " ", 
+       RowBox[{"con", "=", 
+        RowBox[{"N", "[", 
+         RowBox[{
+          RowBox[{"fint", "[", 
+           RowBox[{"f", "[", "i", "]"}], "]"}], ",", 
+          RowBox[{
+           RowBox[{"n", "*", "3"}], "+", "10"}]}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"fdum", "[", "t_", "]"}], "=", 
+        RowBox[{
+         RowBox[{"Integrate", "[", 
+          RowBox[{
+           RowBox[{"fint", "[", "tau", "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"tau", ",", "t"}], "}"}]}], "]"}], "/", "con"}]}], ";", 
+       "\[IndentingNewLine]", " ", 
+       RowBox[{
+        RowBox[{"fAta", "[", "t_", "]"}], "=", 
+        RowBox[{"fdum", "[", "t", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"For", "[", 
+        RowBox[{
+         RowBox[{"j", "=", "1"}], ",", 
+         RowBox[{"j", "<", 
+          RowBox[{"n", "+", "1"}]}], ",", " ", 
+         RowBox[{"j", "++"}], ",", "  ", "\[IndentingNewLine]", "   ", 
+         RowBox[{
+          RowBox[{"Atab", "=", 
+           RowBox[{"fAta", "[", 
+            RowBox[{"f", "[", "j", "]"}], "]"}]}], ";", "\[IndentingNewLine]",
+           "   ", 
+          RowBox[{"nintij", "=", 
+           RowBox[{"N", "[", "Atab", "]"}]}], " ", ";", "\[IndentingNewLine]", 
+          RowBox[{"(*", 
+           RowBox[{
+            RowBox[{"Print", "[", "nintij", "]"}], ";"}], "*)"}], 
+          "\[IndentingNewLine]", 
+          RowBox[{"Write", "[", 
+           RowBox[{"strm", ",", " ", "spre", ",", " ", 
+            RowBox[{"j", "+", "1"}], ",", " ", "smid", ",", " ", 
+            RowBox[{"i", "+", "1"}], ",", " ", "smid2", ",", 
+            RowBox[{"FortranForm", "[", 
+             RowBox[{"Re", "[", "nintij", "]"}], "]"}], ",", "send"}], "]"}], 
+          ";"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+     "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Close", "[", "strm", "]"}], ";", " ", 
+    RowBox[{"Print", "[", "n", "]"}]}]}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.907682609812166*^9, 3.9076826366334205`*^9}, {
+  3.907682750093069*^9, 3.9076827589471292`*^9}, {3.907682942320156*^9, 
+  3.907682978332863*^9}, {3.9085480088456287`*^9, 
+  3.908548046653799*^9}},ExpressionUUID->"b6a12652-5244-4fdd-8153-\
+909bc2c1f16a"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["3"], "Print",
+ CellChangeTimes->{3.907683003814103*^9},
+ CellLabel->
+  "During evaluation of \
+In[18]:=",ExpressionUUID->"4dd5ce95-b09f-4ddd-9b47-093aff2c170d"],
+
+Cell[BoxData["4"], "Print",
+ CellChangeTimes->{3.90768300393024*^9},
+ CellLabel->
+  "During evaluation of \
+In[18]:=",ExpressionUUID->"59a6cde1-29dc-4861-99af-b36ed0a5191b"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1196.25, 1011},
+WindowMargins->{{339, Automatic}, {Automatic, 0}},
+PrintingCopies->1,
+PrintingPageRange->{Automatic, Automatic},
+PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+FrontEndVersion->"13.3 for Microsoft Windows (64-bit) (July 24, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"4066d910-c0b1-4005-be6f-318971071607"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 632, 15, 48, "Input",ExpressionUUID->"05d5f323-5935-432a-9913-414d82d98f6b"],
+Cell[CellGroupData[{
+Cell[1215, 39, 6439, 164, 619, "Input",ExpressionUUID->"b6a12652-5244-4fdd-8153-909bc2c1f16a"],
+Cell[CellGroupData[{
+Cell[7679, 207, 174, 4, 22, "Print",ExpressionUUID->"4dd5ce95-b09f-4ddd-9b47-093aff2c170d"],
+Cell[7856, 213, 173, 4, 22, "Print",ExpressionUUID->"59a6cde1-29dc-4861-99af-b36ed0a5191b"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
