@@ -1,5 +1,7 @@
 function [y,reskeep,errs1,errs2,iters,ierrmsg]=...
   onestep(m,t0,y0,dt,n,T_hat,V_hat,H_hat,tc,kmax,gtol,etol,A,B)
+global num_mult
+global sdcint
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  one time step for sdc
@@ -52,6 +54,7 @@ for k=1:n+1
   temp0=zeros([m,m]); temp0(:,:)=rhsint(k,:,:);
   temp1=zeros([m,m]);temp1(:,:)=ynew(k,:,:);
   eps(k,:,:)=y0-H_hat*temp0-temp1;
+  num_mult = num_mult + 1;
 end
 % epstemp=y0all+tensorprod(rhsint,-H_hat,2,2)-ynew;
 % this is the residual defined in the paper.
@@ -73,7 +76,7 @@ error=[];           % each gmres error.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SDC corrections.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-while count1<kmax && errest>etol  %kmax: max number of iterations allowed.
+while count1<sdcint && errest>etol  %kmax: max number of iterations allowed.
   count1=count1+1;
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,6 +102,7 @@ while count1<kmax && errest>etol  %kmax: max number of iterations allowed.
       epsmat1=zeros([m,m]);epsmat1(:,:)=eps(k,:,:);
       delta(k,:,:)=expm(-H_hat*dtk)*dmat0+epsmat1-expm(-H_hat*dtk)*epsmat0...
           -dtk/2*H_hat*(expm(-H_hat*dtk)*epsmat0+epsmat1);
+      num_mult = num_mult + 4;
   end
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -115,6 +119,7 @@ while count1<kmax && errest>etol  %kmax: max number of iterations allowed.
       temp0=zeros([m,m]); temp0(:,:)=rhsint(k,:,:);
       temp1=zeros([m,m]);temp1(:,:)=ynew(k,:,:);
       eps(k,:,:)=y0-H_hat*temp0-temp1;
+      num_mult = num_mult + 1;
   end
   % this is the residual defined in the paper.
 

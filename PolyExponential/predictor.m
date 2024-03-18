@@ -1,5 +1,5 @@
 function ynew=predictor(t0,y0,t,m,n,T_hat,V_hat,H_hat)
-
+global num_mult 
 % first use constant approximation. This can be improved by a low order
 % method later using Rachel's methods.
 
@@ -15,9 +15,11 @@ switch ichoice
     case 2
         %low order approximation
         ynew(1,:,:)=expm(-T_hat*(t(1)-t0))*expm(-V_hat*(t(1)-t0))*y0;
+        num_mult = num_mult + 2;
         for k=1:n
             ytemp(:,:)=ynew(k,:,:);
             ynew(k+1,:,:)=expm(-T_hat*(t(k+1)-t(k)))*expm(-V_hat*(t(k+1)-t(k)))*ytemp;
+            num_mult = num_mult + 2;
         end
     case 3
         % accurate approximation for debugging purposes

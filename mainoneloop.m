@@ -52,13 +52,13 @@ n_err=zeros([10,25]);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for nk = 2:4
-    sdcint=nk+1;
   % n =10+(nk-1)*14;   % loop over different number of nodes for each big time step.
-  n=4;
+  n=30;
   
   for k =1:25        % loop over different big time step sizes h0.
 
-    h0=tfinal/(8+4*k);  % different big time step size
+    h0=tfinal*0.5^(k+1);  % different big time step size
+    
     % figure(3*nk -2); % output figures.
     % subplot(2,2,k);
     % figure(3*nk-1);
