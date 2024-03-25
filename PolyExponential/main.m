@@ -54,7 +54,7 @@ n_err=zeros([10,25]);
 for nk = 2:4
     sdcint=nk+1;
   % n =10+(nk-1)*14;   % loop over different number of nodes for each big time step.
-  n=4;
+  n=10;
   
   for k =1:25        % loop over different big time step sizes h0.
 
