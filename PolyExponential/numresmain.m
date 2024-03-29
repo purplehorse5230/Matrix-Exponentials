@@ -16,7 +16,6 @@ MATRIX_M = 1;
 MATRIX_G = 1;
 MATRIX_LAMBDA = 0.2;
 
-
 T_hat = hat_T_3d_two_body_constructor(MATRIX_NX, MATRIX_M);
 V_hat = hat_V_3d_two_body_constructor(MATRIX_NX, MATRIX_G * MATRIX_LAMBDA);
 H_hat=T_hat+V_hat;
